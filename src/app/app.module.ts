@@ -5,10 +5,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 import { HttpClientModule } from '@angular/common/http';
+import { FuelPriceComponent } from './fuel-price/fuel-price.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    FuelPriceComponent
   ],
   imports: [
     BrowserModule,
