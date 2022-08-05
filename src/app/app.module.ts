@@ -6,11 +6,13 @@ import { AppComponent } from './app.component';
 
 import { HttpClientModule } from '@angular/common/http';
 import { FuelPriceComponent } from './fuel-price/fuel-price.component';
+import { FuelChartComponent } from './fuel-chart/fuel-chart.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    FuelPriceComponent
+    FuelPriceComponent,
+    FuelChartComponent
   ],
   imports: [
     BrowserModule,
