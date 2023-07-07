@@ -9,6 +9,7 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatCardModule} from "@angular/material/card";
+import { NgxEchartsModule } from 'ngx-echarts';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import {MatCardModule} from "@angular/material/card";
     HttpClientModule,
     FontAwesomeModule,
     BrowserAnimationsModule,
-    MatCardModule
+    MatCardModule,
+    NgxEchartsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

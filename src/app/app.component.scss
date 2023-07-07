@@ -1,0 +1,71 @@
+header{
+    height: 20vh;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    background-color: #CBB9A8;
+}
+
+header h1{
+    font-size: 50px;
+    color: #E5E7EB;
+    font-weight: bold;
+}
+
+fa-icon{
+    display: inline-block; //Pour afficher les icones correctement.
+}
+
+.stats{
+    height: 80vh;
+    background-color: #333333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2%;
+}   
+
+//Card pour chaque carburant.
+.card {
+    width: 12%;
+    height: 15%;
+    background-color: #ffffff;
+    border: 1px solid #dddddd;
+    border-radius: 5px;
+    padding: 10px;
+    text-align: center;
+  }
+  
+  .card-name {
+    font-size: 25px;
+    font-weight: bold;
+    color: #000000;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .card-text{
+    font-size: 18px;
+  }
+
+  //Flèches indiquant une baisse ou une hausse des prix.
+  .arrowDown{
+    transform: rotate(45deg);
+    color: green;
+  }
+
+  .arrowUp{
+    transform: rotate(-45deg);
+    color: red;
+  }
+
+  .up{
+    color: red;
+  }
+
+  .down {
+    color: green
+  }

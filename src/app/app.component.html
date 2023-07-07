@@ -1,0 +1,17 @@
+<header>
+    <fa-icon [icon]="faGasPump" style="color: white;font-size: 50px;"></fa-icon>    
+    <h1>Fuel Monitoring</h1>
+</header>
+
+<div class="stats">
+    <div class="card" *ngFor="let key of getObjectKeys(monDictionnaire)">
+        <div class="card-name">{{ key }}</div>
+        <div class="card-text">📅 {{ monDictionnaire[key][0] }} €/l</div>
+        <div [class]="(isVariationPositive(monDictionnaire[key][1]) ? 'up' : 'down') + ' card-text' ">
+            <fa-icon [icon]="faLongArrowAltRight" [class]="isVariationPositive(monDictionnaire[key][1]) ? 'arrowUp' : 'arrowDown' "></fa-icon> 
+            {{ monDictionnaire[key][1] }} %
+        </div>
+    </div>
+</div>
+
+<div echarts [options]="options" class="demo-chart"></div>

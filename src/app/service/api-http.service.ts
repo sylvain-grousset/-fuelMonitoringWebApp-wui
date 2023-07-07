@@ -7,20 +7,14 @@ import {Observable} from "rxjs";
   providedIn: 'root'
 })
 
-export class ApiHttpService {
+export class ApiService {
 
-  API_URL =  'http://127.0.0.1:8000';
-  GET_ALL = '/getAll';
-  GET_2LASTS = '/get2Lasts';
+  API_URL =  'http://127.0.0.1:8081';
 
   constructor(private http: HttpClient ) {}
 
-  getAll(): Observable<Histo[]>{
-    return this.http.get<Histo[]>(this.API_URL + this.GET_ALL);
-  }
-
-  get2Lasts(): Observable<Histo[]>{
-    return this.http.get<Histo[]>(this.API_URL + this.GET_2LASTS);
+  getByMinusDays(minusDays: number){
+    return this.http.get<Histo>(this.API_URL + '/getByMinusDays/'+minusDays);
   }
 
 }
