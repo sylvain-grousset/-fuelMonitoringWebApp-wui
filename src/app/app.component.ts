@@ -3,6 +3,9 @@ import { ApiService } from './service/api-http.service';
 import { Histo } from "./interface/histo";
 import { faCalendar, faGasPump, faLongArrowAltRight } from '@fortawesome/free-solid-svg-icons';
 import { ECharts, EChartsOption } from 'echarts';
+import { AnimationOptions } from 'ngx-lottie';
+import { PrixFrance } from './interface/PrixFrance';
+import { FormattedPrixFrance } from './interface/FormattedPrixFrance';
 
 @Component({
   selector: 'app-root',
@@ -12,111 +15,154 @@ import { ECharts, EChartsOption } from 'echarts';
 export class AppComponent {
   title = 'fuelMonitoringWebApp-wui';
 
+  //Logos font awesome
   faLongArrowAltRight = faLongArrowAltRight;
   faCalendar = faCalendar;
   faGasPump = faGasPump;
 
-  today!: Histo;
-  yesterday!: Histo;
+  //Variables relativent au graphique.
+  chart: any;
+  options!: EChartsOption;
 
-  public chart: any;
-  public monDictionnaire: { [key: string]: number[] } = {};
+  private myDatas: PrixFrance[] = []; //Données récupérées depuis le backend.
+  formattedData: FormattedPrixFrance[] = []; //Données formatées.
+
+  animationsOptions: AnimationOptions = {
+    path: '/assets/liveAnimation.json', 
+  };
 
   constructor(private apiService: ApiService) {}
 
   ngOnInit() {
-    this.apiService.getByMinusDays(1).subscribe(res => {
-      this.today = res;
-      this.apiService.getByMinusDays(2).subscribe(res => {
-        this.yesterday = res;
 
-        this.monDictionnaire["Gazole"] = [this.today.Gazole, Number(this.calculerVariationPrix("Gazole").toFixed(3))];
-        this.monDictionnaire["SP98"] = [this.today.SP98, Number(this.calculerVariationPrix("SP98").toFixed(3))];
-        this.monDictionnaire["SP95"] = [this.today.SP95, Number(this.calculerVariationPrix("SP95").toFixed(3))];
-        this.monDictionnaire["E85"] = [this.today.E85, Number(this.calculerVariationPrix("E85").toFixed(3))];
-  
-      }); 
+    //Je récupère toutes les données des prix moyens en France.
+    this.apiService.getPrixFrance().subscribe(res => {
+      this.myDatas = res;
+      
+      //Je formatte les données au format souhaité (classe FormattedPrixFrance).
+      this.myDatas.forEach(item => {
+        const formattedItem = this.formattedData.find(data => 
+          data.Carburant === item.Type
+          );
+
+        if (formattedItem) {
+          formattedItem.Datas.push({ Date: this.formatDate(item.Date), Prix: item.PrixMoyen });
+        } else {
+          this.formattedData.push(new FormattedPrixFrance(item.Type, [{ Date: this.formatDate(item.Date), Prix: item.PrixMoyen }]));
+        }
+      });
+
+      console.log(this.formattedData);
+
     });
 
+    //Création du graphique.
     this.createChart();
 
   }
 
-
-
-
-
-  getObjectKeys(obj: any): string[] {
-    return Object.keys(obj);
-  }
-
-  public isVariationPositive(variation: number) : boolean{
-    if(variation > 0){
+  //Retourne si la variation de prix est positive ou négative.
+  public isVariationPositive(typeCarburant: string) : boolean{
+    var element = this.formattedData.filter(element => element.Carburant == typeCarburant)[0];
+    if(((element.Datas[element.Datas.length-1].Prix - element.Datas[element.Datas.length-2].Prix) / element.Datas[element.Datas.length-2].Prix) * 100 > 0){
       return true;
     }else{
       return false;
     }
   }
 
-  private calculerVariationPrix(typeCarburant: string) : number{
-    switch (typeCarburant) {
-      case "Gazole":
-        return ((this.today.Gazole - this.yesterday.Gazole) / this.yesterday.Gazole) * 100;
-      case "SP98":
-        return ((this.today.SP98 - this.yesterday.SP98) / this.yesterday.SP98) * 100;
-      case "SP95":
-        return ((this.today.SP95 - this.yesterday.SP95) / this.yesterday.SP95) * 100;
-      case "E85":
-        return ((this.today.E85 - this.yesterday.E85) / this.yesterday.E85) * 100;
-    }
-    return 0;
+  //Calcul la variation de prix entre aujourd'hui et hier.
+  public calculerVariationPrix(typeCarburant: string) : number{
+    var element = this.formattedData.filter(element => element.Carburant == typeCarburant)[0];
+        return ((element.Datas[element.Datas.length-1].Prix - element.Datas[element.Datas.length-2].Prix) / element.Datas[element.Datas.length-2].Prix) * 100; 
   }
 
 
-  options!: EChartsOption;
   
   createChart(){
-    const xAxisData = [];
-    const data1 = [];
-    const data2 = [];
+    var mesHisto: Histo[] = [];
+    
+    var yAxisGazole:number[] = [];
+    var yAxisSP98:number[] = [];
+    var yAxisSP95:number[] = [];
+    var yAxisE85:number[] = [];
 
-    for (let i = 0; i < 100; i++) {
-      xAxisData.push('category' + i);
-      data1.push((Math.sin(i / 5) * (i / 5 - 10) + i / 6) * 5);
-      data2.push((Math.cos(i / 5) * (i / 5 - 10) + i / 6) * 5);
-    }
+    var xAxis:string[] = [];
 
-    this.options = {
-      legend: {
-        data: ['bar', 'bar2'],
-        align: 'left',
-      },
-      tooltip: {},
-      xAxis: {
-        data: xAxisData,
-        silent: false,
-        splitLine: {
-          show: false,
+    this.apiService.getAll().subscribe(res => {
+      mesHisto = res;
+      mesHisto.forEach((item) => {
+        xAxis.push(this.formatDate(item.Date));
+        yAxisGazole.push(item.Gazole);
+        yAxisSP98.push(item.SP98);
+        yAxisSP95.push(item.SP95);
+        yAxisE85.push(item.E85);
+      })
+
+      this.options = {
+        legend: {
+          data: ['Gazole', 'SP98', 'SP95', 'E85']
         },
-      },
-      yAxis: {},
-      series: [
-        {
-          name: 'bar',
-          type: 'bar',
-          data: data1,
-          animationDelay: idx => idx * 10,
+
+        tooltip: {
+          trigger: 'axis'
         },
-        {
-          name: 'bar2',
-          type: 'bar',
-          data: data2,
-          animationDelay: idx => idx * 10 + 100,
+
+        xAxis: {
+          type: 'category',
+          data: xAxis,
+          axisLabel: {
+            show: true,
+            interval: 0,
+            rotate: 45,
+          },
         },
-      ],
-      animationEasing: 'elasticOut',
-      animationDelayUpdate: idx => idx * 5,
-    };
+        yAxis: {
+          type: 'value',
+          min: 'auto',
+          show: true
+        },
+
+        series: [
+          {
+            type: 'line',
+            name: 'Gazole',
+            data: yAxisGazole,
+            showSymbol: false
+          },
+          {
+            type: 'line',
+            name: 'SP98',
+            data: yAxisSP98,
+            showSymbol: false,
+          },
+          {
+            type: 'line',
+            name: 'SP95',
+            data: yAxisSP95,
+            showSymbol: false
+          },
+          {
+            type: 'line',
+            name: 'E85',
+            data: yAxisE85,
+            showSymbol: false
+          }
+        ]
+      };
+
+    });
+
   }
-  
+
+  private formatDate(inputDate: string): string{
+    const dateObj = new Date(inputDate);
+    
+    const day = dateObj.getDate().toString().padStart(2, '0');
+    const month = (dateObj.getMonth() + 1).toString().padStart(2, '0');
+    const year = dateObj.getFullYear().toString();
+
+    return `${day}/${month}/${year}`;
+  }
+
 }

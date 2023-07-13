@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
-import {Histo} from "../interface/histo";
-import {Observable} from "rxjs";
+import { HttpClient } from "@angular/common/http";
+import { Histo } from "../interface/histo";
+import { PrixFrance } from '../interface/PrixFrance';
+import { Observable } from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,14 @@ export class ApiService {
 
   getByMinusDays(minusDays: number){
     return this.http.get<Histo>(this.API_URL + '/getByMinusDays/'+minusDays);
+  }
+
+  getAll(){
+    return this.http.get<Histo[]>(this.API_URL + '/getAll');
+  }
+
+  getPrixFrance(){
+    return this.http.get<PrixFrance[]>(this.API_URL + '/getPrixFrance');
   }
 
 }

@@ -1,17 +1,25 @@
 <header>
-    <fa-icon [icon]="faGasPump" style="color: white;font-size: 50px;"></fa-icon>    
+    <fa-icon [icon]="faGasPump"></fa-icon>
     <h1>Fuel Monitoring</h1>
 </header>
 
 <div class="stats">
-    <div class="card" *ngFor="let key of getObjectKeys(monDictionnaire)">
-        <div class="card-name">{{ key }}</div>
-        <div class="card-text">📅 {{ monDictionnaire[key][0] }} €/l</div>
-        <div [class]="(isVariationPositive(monDictionnaire[key][1]) ? 'up' : 'down') + ' card-text' ">
-            <fa-icon [icon]="faLongArrowAltRight" [class]="isVariationPositive(monDictionnaire[key][1]) ? 'arrowUp' : 'arrowDown' "></fa-icon> 
-            {{ monDictionnaire[key][1] }} %
+    <div class="statsHeader">
+        <h1>Les prix aujourd'hui</h1>
+        <ng-lottie height="auto" [options]="animationsOptions"></ng-lottie>
+    </div>
+    <div class="cardDisplay">
+        <div class="card" *ngFor="let element of formattedData">
+            <div class="card-name">{{ element.Carburant }}</div>
+            <div class="card-text">📅 {{ element.Datas[element.Datas.length-1].Prix }} €/l</div>
+            <div [class]="(isVariationPositive(element.Carburant) ? 'up' : 'down') + ' card-text'">
+                <fa-icon [icon]="faLongArrowAltRight"
+                    [class]="isVariationPositive(element.Carburant) ? 'arrowUp' : 'arrowDown'"></fa-icon>
+                {{ calculerVariationPrix(element.Carburant).toFixed(2) }} %
+            </div>
         </div>
     </div>
 </div>
-
-<div echarts [options]="options" class="demo-chart"></div>
+<div class="charts">
+    <div echarts [options]="options" class="demo-chart"></div>
+</div>

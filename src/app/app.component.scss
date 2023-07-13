@@ -1,6 +1,4 @@
 header{
-    height: 20vh;
-
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -10,28 +8,53 @@ header{
 }
 
 header h1{
-    font-size: 50px;
-    color: #E5E7EB;
+    font-size: 4em;
     font-weight: bold;
 }
+
+header fa-icon{
+  font-size: 50px;
+}
+
 
 fa-icon{
     display: inline-block; //Pour afficher les icones correctement.
 }
 
+ng-lottie{
+  width: 100px;
+}
+
+.statsHeader{
+  display: flex;
+}
+.statsHeader h1{
+  font-size: 2.5em;
+}
+
 .stats{
-    height: 80vh;
-    background-color: #333333;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 2%;
+  background-color: #CBB9A8;
+  display: flex;
+  align-items: center;
+  flex-direction: column; 
+  padding-bottom: 10px;
 }   
 
-//Card pour chaque carburant.
+.charts{
+  margin-top: 30px;
+}
+
+//L'ensemble des cards
+.cardDisplay{
+  display: flex;
+  gap: 5%;
+  margin-top: 35px;
+}
+
+//Une card
 .card {
-    width: 12%;
-    height: 15%;
+    width: 180px;
+    height: 100px;
     background-color: #ffffff;
     border: 1px solid #dddddd;
     border-radius: 5px;
@@ -40,7 +63,7 @@ fa-icon{
   }
   
   .card-name {
-    font-size: 25px;
+    font-size: 1.5em;
     font-weight: bold;
     color: #000000;
     text-align: center;
@@ -48,7 +71,52 @@ fa-icon{
   }
 
   .card-text{
-    font-size: 18px;
+    font-size: 1em;
+  }
+
+  @media screen and (max-width: 800px) {
+    header h1{
+      font-size: 3em;
+      font-weight: bold;
+    }
+
+    ng-lottie{
+      width: 75px;
+    }
+    
+    header fa-icon{
+      font-size: 45px;
+    }
+
+    .cardDisplay{
+      flex-direction: row; 
+      flex-wrap: wrap; 
+      justify-content: center; 
+      gap: 10px;
+    }
+
+    .stats{
+      height: auto;
+      padding-bottom: 35px;
+    }
+
+  }
+
+  @media screen and (max-width: 485px) {
+    header h1{
+      font-size: 2.2em;
+      font-weight: bold;
+    }
+
+    header fa-icon{
+      font-size: 35px;
+    }
+
+    .statsHeader h1{
+      font-size: 1.5em;
+      font-weight: bold;
+    }
+
   }
 
   //Flèches indiquant une baisse ou une hausse des prix.
