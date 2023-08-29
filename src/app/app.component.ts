@@ -33,6 +33,7 @@ export class AppComponent {
 
   constructor(private apiService: ApiService) {}
 
+
   ngOnInit() {
 
     //Je récupère toutes les données des prix moyens en France.
@@ -52,7 +53,7 @@ export class AppComponent {
         }
       });
 
-      console.log(this.formattedData);
+      //console.log(this.formattedData);
 
     });
 

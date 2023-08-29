@@ -8,6 +8,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatCardModule } from "@angular/material/card";
 import { NgxEchartsModule } from 'ngx-echarts';
 import { LottieModule } from 'ngx-lottie';
+import { SearchBoxComponent } from './search-box/search-box.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 export function playerFactory() {
   return import('lottie-web');
@@ -16,6 +19,7 @@ export function playerFactory() {
 @NgModule({
   declarations: [
     AppComponent,
+    SearchBoxComponent,
   ],
   imports: [
     BrowserModule,
@@ -27,7 +31,10 @@ export function playerFactory() {
     NgxEchartsModule.forRoot({
       echarts: () => import('echarts')
     }),
-    LottieModule.forRoot({ player: playerFactory })
+    LottieModule.forRoot({ player: playerFactory }),
+    FormsModule,
+    ReactiveFormsModule,
+    MatAutocompleteModule
   ],
   providers: [],
   bootstrap: [AppComponent]

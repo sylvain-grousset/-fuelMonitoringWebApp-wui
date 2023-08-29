@@ -1,0 +1,17 @@
+<div class="searchHeader">
+  <ng-lottie height="auto" [options]="animationsOptions"></ng-lottie>
+  <h1>Recherchez votre ville</h1>
+</div>
+
+<input type="text"
+        placeholder="Cherchez une ville"
+        [formControl]="control"
+        [matAutocomplete]="auto"
+        class="search_input">
+<mat-autocomplete #auto="matAutocomplete">
+  <mat-option *ngFor="let uneVille of filteredVilles | async" [value]="uneVille.ville + ' '+ uneVille.code_postal">
+    {{ uneVille.ville }} {{ uneVille.code_postal}}
+  </mat-option>
+</mat-autocomplete>
+
+  

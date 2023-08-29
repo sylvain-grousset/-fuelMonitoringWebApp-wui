@@ -1,0 +1,33 @@
+.search_input{
+    width: 350px;
+    border-radius: 25px;
+    height: 45px;
+    border-width: 0px;
+    padding-left: 1.5rem;
+    text-transform: uppercase;
+}
+
+//Pour garder le placeholder en minuscule
+::-webkit-input-placeholder { /* WebKit browsers */
+    text-transform: none;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    text-transform: none;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+    text-transform: none;
+}
+:-ms-input-placeholder { /* Internet Explorer 10+ */
+    text-transform: none;
+}
+::placeholder { /* Recent browsers */
+    text-transform: none;
+}
+
+.searchHeader{
+    display: flex;
+}
+
+ng-lottie{
+    width: 75px;
+  }

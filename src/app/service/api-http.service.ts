@@ -3,6 +3,7 @@ import { HttpClient } from "@angular/common/http";
 import { Histo } from "../interface/histo";
 import { PrixFrance } from '../interface/PrixFrance';
 import { Observable } from "rxjs";
+import { Commune } from '../interface/Commune';
 
 @Injectable({
   providedIn: 'root'
@@ -24,6 +25,10 @@ export class ApiService {
 
   getPrixFrance(){
     return this.http.get<PrixFrance[]>(this.API_URL + '/getPrixFrance');
+  }
+
+  getCommunes(){
+    return this.http.get<Commune[]>(this.API_URL + '/getCommunes');
   }
 
 }
