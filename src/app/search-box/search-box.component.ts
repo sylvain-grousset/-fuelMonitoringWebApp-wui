@@ -30,7 +30,7 @@ export class SearchBoxComponent implements OnInit {
       this.lesVilles = res;
       this.filteredVilles = this.control.valueChanges.pipe(
         startWith(''),
-        map(value => this._filter(value || '')),
+        map(value => this.filter(value || '')),
       );
     });
       
@@ -39,8 +39,8 @@ export class SearchBoxComponent implements OnInit {
   }
 
   //Filtre les données en fonction des inputs de l'utilisateur.
-  private _filter(value: string): Commune[] {
-    const filterValue = this._normalizeValue(value);
+  private filter(value: string): Commune[] {
+    const filterValue = this.normalizeValue(value);
 
     //Pour éviter d'afficher toutes les données.
     if(filterValue === ''){
@@ -51,14 +51,14 @@ export class SearchBoxComponent implements OnInit {
 
     return this.lesVilles.filter(uneVille => 
       inputValues.every(a => 
-        this._normalizeValue(uneVille.ville).includes(a) || 
-        this._normalizeValue(uneVille.code_postal).includes(a)
+        this.normalizeValue(uneVille.ville).includes(a) || 
+        this.normalizeValue(uneVille.code_postal).includes(a)
         )
       );
   }
 
   //Normalise les entrées
-  private _normalizeValue(value: string): string {
+  private normalizeValue(value: string): string {
     return value.toLowerCase().replace(/\s/g, '');
   }
   
